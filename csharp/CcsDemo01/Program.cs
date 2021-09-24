@@ -10,10 +10,21 @@ namespace CcsDemo
 {
     class Program
     {
-        
+
+        static Program()
+        {
+            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) =>
+            {
+                return true;
+            };
+
+        }
+
         static void Main(string[] args)
         {
-            HistoryClient.GetMessageHistory();
+            // HistoryClient.GetMessageHistory();
+
+            NotificationClient.Send();
         }
     }
 }
