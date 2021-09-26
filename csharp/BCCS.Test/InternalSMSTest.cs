@@ -1,8 +1,6 @@
 ﻿using BCCS.Library.Client;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -10,33 +8,29 @@ using Xunit.Abstractions;
 
 namespace BCCS.Test
 {
-    public class SMSTest
+    public class InternalSMSTest
     {
-
         private readonly ITestOutputHelper output;
 
-        public SMSTest(ITestOutputHelper outputHelper)
+        public InternalSMSTest(ITestOutputHelper outputHelper)
         {
             output = outputHelper;
         }
 
-
         private readonly MessageClient _client = new MessageClient();
 
-        public readonly  string _endpoint = "https://bccsprod-bak.chinaeast2.cloudapp.chinacloudapi.cn";
+        public readonly string _endpoint = "https://bccsprod-bak.chinaeast2.cloudapp.chinacloudapi.cn";
 
         //测试ccs账号名称
-        public readonly  string _testCcsAccount = "cmpp01";
+        public readonly string _testCcsAccount = "internalsms";
         //密钥名称
-        public readonly  string _keyName = "full";
+        public readonly string _keyName = "full";
         //密钥
-        public readonly  string _keyValue = "KB8Iv7UGTJJz6Ux69ScwlhYLqtE7h0s6qTbXJvNExtc=";
-        //测试模板名称
-        public readonly  string _testTemplateName = "temp01";
+        public readonly string _keyValue = "";
         //测试手机号
-        public readonly  string _testMobile = "18321676517";
+        public readonly string _testMobile = "18321676517";
         //下发扩展码，两位纯数字
-        public readonly  string _testExtend = "08";
+        public readonly string _testExtend = "08";
 
         [Fact]
         public async Task SendSMSAsync()
@@ -47,12 +41,10 @@ namespace BCCS.Test
                 PhoneNumber = new List<string> { _testMobile },
                 MessageBody = new Library.Model.MessageBody
                 {
-                    TemplateName = _testTemplateName,
+                    TemplateName = "jiwagtest",
                     TemplateParam = new Dictionary<string, string>
                     {
-                        { "username", "1"},
-                        { "time", DateTime.UtcNow.AddHours(8).ToLongTimeString()},
-                        { "amount", "222"}
+                        { "username", DateTime.UtcNow.AddHours(8).ToLongTimeString()},
                     }
                 }
 
@@ -77,7 +69,7 @@ namespace BCCS.Test
                 CodeLength = "6",
                 ExpireTime = "60",
                 PhoneNumber = _testMobile,
-                TemplateName = "otptest"
+                TemplateName = "azureadapply"
 
             }, new Library.Model.SMSCredential
             {
@@ -90,5 +82,6 @@ namespace BCCS.Test
             output.WriteLine(ret);
             Assert.NotEmpty(ret);
         }
+
     }
 }
